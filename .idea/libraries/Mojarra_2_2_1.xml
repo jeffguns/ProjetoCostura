@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Mojarra-2.2.1" type="jsf">
+    <properties version="2.2.1" />
+    <CLASSES />
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.ideaLibSources/javax.faces-2.2.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

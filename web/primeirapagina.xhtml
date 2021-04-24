@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui">
+
+
+<h:head>
+    <title>Cadastro de usuário</title>
+</h:head>
+<h:body>
+    <h:form>
+        <p:breadCrumb>
+            <p:menuitem/>
+            <p:menuitem value="Página Login" action="index.xhtml"/>
+            <p:menuitem value="Página Cadastro" action="primeirapagina.xhtml"/>
+        </p:breadCrumb>
+    </h:form>
+
+    <center>
+        <h:form id="formUsuario" style="padding-top: 10px;">
+            <p:growl autoUpdate="true" showDetail="true"/>
+            <p:panelGrid columns="2">
+                <f:facet name="header">
+                    <h:outputText value="Cadastro de usuário"/>
+                </f:facet>
+
+                <p:outputLabel value="Id:"/>
+                <p:inputText value="#{pessoaBean.pessoa.id}" readonly="true"/>
+
+                <p:outputLabel value="Nome:"/>
+                <p:inputText value="#{pessoaBean.pessoa.nome}" required="true" requiredMessage="Nome é obrigatório"/>
+
+                <p:outputLabel value="Sobrenome:"/>
+                <p:inputText value="#{pessoaBean.pessoa.sobrenome}" required="true"
+                             requiredMessage="Sobrenome é obrigatório"/>
+
+
+                <p:outputLabel value="Sexo:" required="true" requiredMessage="Sexo é obrigatório"/>
+
+                <p:selectOneRadio value="#{pessoaBean.pessoa.sexo}">
+                    <f:selectItem itemValue="M" itemLabel="Masculino"/>
+                    <f:selectItem itemValue="F" itemLabel="Feminino"/>
+                </p:selectOneRadio>
+
+                <p:outputLabel value="Perfil:"/>
+
+                <p:selectOneMenu id="perfil" value="#{pessoaBean.pessoa.perfilUser}" required="false">
+                    <f:selectItem itemLabel="[-Selecione-]" noSelectionOption="true"/>
+                    <f:selectItem itemValue="ADMINISTRADOR" itemLabel="Administrador"/>
+                    <f:selectItem itemValue="FUNCIONARIO" itemLabel="Funcionario"/>
+                </p:selectOneMenu>
+
+                <p:outputLabel value="Ativo"/>
+                <p:selectBooleanCheckbox value="#{pessoaBean.pessoa.ativo}"/>
+
+                <p:outputLabel value="Login:"/>
+                <p:inputText value="#{pessoaBean.pessoa.login}"/>
+
+                <p:outputLabel value="Senha:"/>
+                <p:password value="#{pessoaBean.pessoa.senha}"/>
+
+                <center>
+                    <h:panelGroup>
+                        <p:commandButton ajax="false" value="Salvar" action="#{pessoaBean.salvar}"/>
+                        <p:commandButton ajax="false" value="Novo" action="#{pessoaBean.novo}">
+                            <f:ajax execute="@this" render="@form"/>
+                        </p:commandButton>
+                    </h:panelGroup>
+                </center>
+            </p:panelGrid>
+        </h:form>
+    </center>
+
+    <h:form>
+        <p:panel header="Pesquisar usuário">
+            <h:panelGrid columns="3" >
+                <h:outputLabel value="Nome:" />
+                <p:inputText value="#{pessoaBean.campoPesquisar}" />
+                <p:commandButton ajax="false" value="Pesquisar" actionListener="#{pessoaBean.pesquisar}" update=":formTable"/>
+            </h:panelGrid>
+        </p:panel>
+    </h:form>
+
+    <h:form id="formTable">
+
+        <p:dataTable value="#{pessoaBean.pessoas}" var="pessoa" style="padding-top: 10px"
+                     rows="5" paginator="true" lazy="true" paginatorPosition="bottom"
+                     paginatorTemplate="{FirstPageLink} {PageLinks} {LastPageLink}">>
+
+            <f:facet name="header">Lista de funcionários</f:facet>
+
+            <p:column headerText="Id" width="20">
+                <h:outputText value="#{pessoa.id}"/>
+            </p:column>
+
+            <p:column headerText="Nome">
+                <h:outputText value="#{pessoa.nome}"/>
+            </p:column>
+
+
+            <p:column headerText="Editar" width="80">
+                <center>
+                    <h:commandLink immediate="true" id="botaoeditar">
+                        <h:graphicImage url="resources/img/editar.png" width="50" height="50"/>
+                        <f:setPropertyActionListener value="#{pessoa}" target="#{pessoaBean.pessoa}"/>
+                        <f:ajax execute="botaoeditar" render=":formUsuario"/>
+                    </h:commandLink>
+                </center>
+            </p:column>
+
+            <p:column headerText="Excluir" width="80">
+                <center>
+                    <h:commandLink action="#{pessoaBean.remove}" immediate="true" id="botaoremover">
+                        <h:graphicImage url="resources/img/excluir.png" width="50" height="50"/>
+                        <f:setPropertyActionListener value="#{pessoa}" target="#{pessoaBean.pessoa}"/>
+                        <f:ajax execute="botaoremover" render="@form"/>
+                    </h:commandLink>
+                </center>
+            </p:column>
+        </p:dataTable>
+    </h:form>
+
+</h:body>
+
+</html>
